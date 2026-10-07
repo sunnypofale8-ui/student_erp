@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Student ERP - Admission Form</title>
+</head>
+
+<body>
+
+  <a href="index.html">Home</a> |
+  <a href="admission.html">Apply Now</a> |
+  <a href="records.html">Admin Panel</a>
+
+  <hr>
+
+  <h1>Student Admission Form</h1>
+  <p>Fill all details. * means required field.</p>
+
+  <hr>
+
+  <form onsubmit="saveAdmission(event)">
+
+    <h3>1. Personal Details</h3>
+
+    <table border="1" cellpadding="8">
+
+      <tr>
+        <td>Full Name *</td>
+        <td><input type="text" id="fullname" placeholder="Enter your full name" required></td>
+      </tr>
+
+      <tr>
+        <td>Date of Birth *</td>
+        <td><input type="date" id="dob" required></td>
+      </tr>
+
+      <tr>
+        <td>Gender *</td>
+        <td>
+          <input type="radio" name="gender" value="Male"> Male
+          <input type="radio" name="gender" value="Female"> Female
+          <input type="radio" name="gender" value="Other"> Other
+        </td>
+      </tr>
+
+      <tr>
+        <td>Category *</td>
+        <td>
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option>General</option>
+            <option>OBC</option>
+            <option>SC</option>
+            <option>ST</option>
+            <option>EWS</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Aadhar Number *</td>
+        <td><input type="text" id="aadhar" placeholder="12 digit aadhar" maxlength="12" required></td>
+      </tr>
+
+    </table>
+
+    <br>
+
+    <h3>2. Course Selection</h3>
+
+    <table border="1" cellpadding="8">
+
+      <tr>
+        <td>Select Course *</td>
+        <td>
+          <select id="course" required onchange="updateFee()">
+            <option value="">Select Course</option>
+            <option value="BCA">BCA - Bachelor of Computer Applications</option>
+            <option value="MCA">MCA - Master of Computer Applications</option>
+            <option value="BBA">BBA - Bachelor of Business Administration</option>
+            <option value="MBA">MBA - Master of Business Administration</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Course Fee (per year)</td>
+        <td><span id="feeDisplay">Select a course to see fee</span></td>
+      </tr>
+
+      <tr>
+        <td>Admission Mode *</td>
+        <td>
+          <select id="admissionMode" required>
+            <option value="">Select</option>
+            <option>Merit Based</option>
+            <option>Management Quota</option>
+            <option>Sports Quota</option>
+            <option>NRI Quota</option>
+          </select>
+        </td>
+      </tr>
+
+    </table>
+
+    <br>
+
+    <input type="submit" value="Submit Form">
+    &nbsp;
+    <input type="reset" value="Clear Form">
+    &nbsp;
+    <button type="button" onclick="window.location.href='index.html'">Go to Home</button>
+
+  </form>
+
+  <script>
+
+    function updateFee() {
+
+      var course = document.getElementById('course').value;
+      var feeDisplay = document.getElementById('feeDisplay');
+
+      if (course == 'BCA') {
+        feeDisplay.innerHTML = 'Rs. 45,000 per year';
+      } else if (course == 'MCA') {
+        feeDisplay.innerHTML = 'Rs. 55,000 per year';
+      } else if (course == 'BBA') {
+        feeDisplay.innerHTML = 'Rs. 40,000 per year';
+      } else if (course == 'MBA') {
+        feeDisplay.innerHTML = 'Rs. 65,000 per year';
+      } else {
+        feeDisplay.innerHTML = 'Select a course to see fee';
+      }
+
+    }
+
+
+    function saveAdmission(event) {
+
+      event.preventDefault();
+
+      var genderInputs = document.getElementsByName('gender');
+      var gender = '';
+      for (var i = 0; i < genderInputs.length; i++) {
+        if (genderInputs[i].checked) {
+          gender = genderInputs[i].value;
+          break;
+        }
+      }
+
+      var appNumber = 'APP' + Date.now();
+
+      var today = new Date();
+      var applyDate = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+
+      var studentData = {
+        applicationNumber : appNumber,
+        applyDate         : applyDate,
+        fullname          : document.getElementById('fullname').value,
+        dob               : document.getElementById('dob').value,
+        gender            : gender,
+        category          : document.getElementById('category').value,
+        aadhar            : document.getElementById('aadhar').value,
+        course            : document.getElementById('course').value,
+        admissionMode     : document.getElementById('admissionMode').value,
+        status            : 'Pending'
+      };
+
+      var existingData = JSON.parse(localStorage.getItem('admissions')) || [];
+      existingData.push(studentData);
+      localStorage.setItem('admissions', JSON.stringify(existingData));
+
+      localStorage.setItem('lastAdmission', JSON.stringify(studentData));
+
+      window.location.href = 'thankyou.html';
+
+    }
+
+  </script>
+
+</body>
+
+</html>

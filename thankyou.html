@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Student ERP - Form Submitted</title>
+</head>
+
+<body>
+
+  <a href="index.html">Home</a> |
+  <a href="admission.html">Apply Again</a> |
+  <a href="records.html">Admin Panel</a>
+
+  <hr>
+
+  <h1>Admission Form Submitted!</h1>
+  <h3>Please save your Application Number.</h3>
+
+  <hr>
+
+  <div id="confirmationDetails">
+    <p>Loading your details...</p>
+  </div>
+
+  <hr>
+
+  <p><b>Important:</b></p>
+  <ol>
+    <li>Take printout of this page.</li>
+    <li>Keep your Application Number safe.</li>
+    <li>Documents required at admission:
+      <ul>
+        <li>10th Marksheet (Original + Copy)</li>
+        <li>12th or Graduation Marksheet (Original + Copy)</li>
+        <li>Aadhar Card (Original + Copy)</li>
+        <li>Category Certificate (if required)</li>
+        <li>4 Passport Size Photos</li>
+        <li>Transfer Certificate</li>
+      </ul>
+    </li>
+    <li>Admission depends on document verification.</li>
+    <li>Contact: 9876543210</li>
+  </ol>
+
+  <br>
+  <button onclick="window.print()">Print Page</button>
+  &nbsp;
+  <button onclick="window.location.href='index.html'">Go to Home</button>
+  &nbsp;
+  <button onclick="window.location.href='admission.html'">Apply for Another Student</button>
+
+
+  <script>
+
+    window.onload = function() {
+
+      var student = JSON.parse(localStorage.getItem('lastAdmission'));
+
+      var div = document.getElementById('confirmationDetails');
+
+      if (student == null) {
+        div.innerHTML = '<p>No data found. Please fill the admission form first.</p>';
+        return;
+      }
+
+      var html = '';
+
+      html += '<h2>Application Number: ' + student.applicationNumber + '</h2>';
+      html += '<p>Date: ' + student.applyDate + '</p>';
+      html += '<p>Status: ' + student.status + ' (will be updated after verification)</p>';
+
+      html += '<br>';
+
+      html += '<table border="1" cellpadding="8">';
+      html += '<tr><th colspan="2">Student Details</th></tr>';
+
+      html += '<tr><td>Full Name</td><td>' + student.fullname + '</td></tr>';
+      html += '<tr><td>Date of Birth</td><td>' + student.dob + '</td></tr>';
+      html += '<tr><td>Gender</td><td>' + student.gender + '</td></tr>';
+      html += '<tr><td>Category</td><td>' + student.category + '</td></tr>';
+      html += '<tr><td>Aadhar Number</td><td>' + student.aadhar + '</td></tr>';
+      html += '<tr><td>Applied Course</td><td>' + student.course + '</td></tr>';
+      html += '<tr><td>Admission Mode</td><td>' + student.admissionMode + '</td></tr>';
+
+      html += '</table>';
+
+      div.innerHTML = html;
+
+    };
+
+  </script>
+
+</body>
+
+</html>
